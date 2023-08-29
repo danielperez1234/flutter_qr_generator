@@ -14,7 +14,11 @@ class QrPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            children: [QrImage(data: data)],
+            children: [
+              QrImage(
+                data: data,
+              )
+            ],
           ),
         ),
       ),

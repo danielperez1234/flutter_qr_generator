@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_generator/pages/qr_page.dart';
+import 'package:vcard_maintained/vcard_maintained.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,14 +31,34 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   generateQr() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => QrPage(data: qrContent.text)));
+    final vCard = VCard();
+    vCard.workPhone = workPhoneController.text;
+    vCard.firstName = firstNameController.text;
+    vCard.lastName = lastNameController.text;
+    vCard.organization = organizationController.text;
+    vCard.birthday = DateTime.tryParse(birthController.text);
+    vCard.jobTitle = titleController.text;
+    vCard.url = urlController.text;
+    vCard.note = noteController.text;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => QrPage(data: vCard.getFormattedString())));
   }
 
-  final qrContent = TextEditingController();
+  final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final organizationController = TextEditingController();
+  final workPhoneController = TextEditingController();
+  final birthController = TextEditingController();
+  final titleController = TextEditingController();
+  final urlController = TextEditingController();
+  final noteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Qr Generator"),
       ),
@@ -46,13 +67,73 @@ class _MainPageState extends State<MainPage> {
         child: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: GridView.count(
+            crossAxisCount: 2,
             children: <Widget>[
-              TextFormField(
-                controller: qrContent,
-                decoration: const InputDecoration(hintText: "Contenido de QR"),
-              )
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: firstNameController,
+                  decoration: const InputDecoration(hintText: "Nombre"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: middleNameController,
+                  decoration: const InputDecoration(hintText: "Segundo nombre"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(hintText: "Apellido"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: organizationController,
+                  decoration: const InputDecoration(hintText: "organizacion"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: workPhoneController,
+                  decoration: const InputDecoration(hintText: "telefono"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: birthController,
+                  decoration:
+                      const InputDecoration(hintText: "bd: yyyyy-mm-dd"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: titleController,
+                  decoration: const InputDecoration(hintText: "Titulo"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: urlController,
+                  decoration: const InputDecoration(hintText: "Url"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: noteController,
+                  decoration: const InputDecoration(hintText: "Nota"),
+                ),
+              ),
             ],
           ),
         ),
